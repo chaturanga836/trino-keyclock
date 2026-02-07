@@ -19,4 +19,4 @@ services:
       KC_HOSTNAME_STRICT: "false"
       KC_HTTP_ENABLED: "true"
     ports:
-      - "8080:8080"
+      - "8081:8080"
