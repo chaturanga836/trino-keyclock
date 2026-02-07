@@ -1,6 +1,7 @@
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.0
+    container_name: keycloak-prod
     command: start-dev
     env_file:
       - .env
@@ -10,6 +11,7 @@ services:
       KC_DB_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       KC_DB_USERNAME: ${DB_USER}
       KC_DB_PASSWORD: ${DB_PASSWORD}
+      KC_HOSTNAME_STRICT_HTTPS: "false"
       
       # Initial Admin Credentials
       KEYCLOAK_ADMIN: ${KC_ADMIN_USER}
