@@ -12,7 +12,6 @@ services:
       KC_DB_USERNAME: ${DB_USER}
       KC_DB_PASSWORD: ${DB_PASSWORD}
       KC_HOSTNAME_STRICT_HTTPS: "false"
-      KC_HTTP_ENABLED: "true"
       KC_PROXY_HEADERS: "none"
       
       # Initial Admin Credentials
