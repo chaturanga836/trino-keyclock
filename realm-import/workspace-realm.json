@@ -1,0 +1,276 @@
+{
+  "realm": "workspace-realm",
+  "enabled": true,
+  "displayName": "Workspace Access Control",
+  "registrationAllowed": false,
+  "registrationEmailAsUsername": true,
+  "rememberMe": true,
+  "verifyEmail": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "defaultRoles": [
+    "offline_access",
+    "uma_authorization"
+  ],
+  "defaultDefaultClientScopes": [
+    "profile",
+    "email",
+    "roles",
+    "workspace-claims"
+  ],
+  "defaultOptionalClientScopes": [
+    "address",
+    "phone",
+    "microprofile-jwt",
+    "offline_access"
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "super_admin",
+        "description": "Can access all workspaces and platform administration actions."
+      },
+      {
+        "name": "workspace_admin",
+        "description": "Can administer a single workspace."
+      },
+      {
+        "name": "workspace_user",
+        "description": "Standard workspace member role."
+      },
+      {
+        "name": "workspace_viewer",
+        "description": "Read-only access inside a workspace."
+      },
+      {
+        "name": "workspace_editor",
+        "description": "Read-write access inside a workspace."
+      },
+      {
+        "name": "cross_workspace_delegate",
+        "description": "Can receive explicit grants into other workspaces."
+      },
+      {
+        "name": "impersonation_operator",
+        "description": "Can impersonate users when granted realm-management permissions."
+      }
+    ]
+  },
+  "groups": [
+    {
+      "name": "workspaces",
+      "attributes": {
+        "group_type": [
+          "workspace-root"
+        ]
+      },
+      "subGroups": [
+        {
+          "name": "ws-default",
+          "attributes": {
+            "workspace_id": [
+              "ws-default"
+            ],
+            "workspace_name": [
+              "Default Workspace"
+            ],
+            "workspace_status": [
+              "active"
+            ]
+          },
+          "realmRoles": [
+            "workspace_user"
+          ],
+          "subGroups": [
+            {
+              "name": "admins",
+              "attributes": {
+                "workspace_id": [
+                  "ws-default"
+                ],
+                "membership_type": [
+                  "workspace-admins"
+                ]
+              },
+              "realmRoles": [
+                "workspace_admin",
+                "workspace_editor"
+              ]
+            },
+            {
+              "name": "members",
+              "attributes": {
+                "workspace_id": [
+                  "ws-default"
+                ],
+                "membership_type": [
+                  "workspace-members"
+                ]
+              },
+              "realmRoles": [
+                "workspace_user"
+              ]
+            },
+            {
+              "name": "viewers",
+              "attributes": {
+                "workspace_id": [
+                  "ws-default"
+                ],
+                "membership_type": [
+                  "workspace-viewers"
+                ]
+              },
+              "realmRoles": [
+                "workspace_viewer"
+              ]
+            },
+            {
+              "name": "editors",
+              "attributes": {
+                "workspace_id": [
+                  "ws-default"
+                ],
+                "membership_type": [
+                  "workspace-editors"
+                ]
+              },
+              "realmRoles": [
+                "workspace_editor"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "invites",
+      "attributes": {
+        "group_type": [
+          "invitation-root"
+        ],
+        "note": [
+          "Store invitation metadata as group attributes for pending users or service workflows."
+        ]
+      }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "workspace-web",
+      "name": "Workspace Web App",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://127.0.0.1:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "fullScopeAllowed": false,
+      "defaultClientScopes": [
+        "profile",
+        "email",
+        "roles"
+      ],
+      "optionalClientScopes": [
+        "offline_access"
+      ]
+    },
+    {
+      "clientId": "workspace-api",
+      "name": "Workspace Backend API",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "fullScopeAllowed": false,
+      "secret": "workspace-api-secret-change-me",
+      "defaultClientScopes": [
+        "profile",
+        "email",
+        "roles"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "superadmin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Super",
+      "lastName": "Admin",
+      "email": "superadmin@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "SuperAdmin#123",
+          "temporary": false
+        }
+      ],
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ],
+      "realmRoles": [
+        "super_admin",
+        "cross_workspace_delegate",
+        "impersonation_operator"
+      ],
+      "groups": [
+        "/workspaces/ws-default/admins"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "impersonation",
+          "manage-users",
+          "view-users",
+          "query-users",
+          "query-groups"
+        ]
+      },
+      "attributes": {
+        "bootstrap_user": [
+          "true"
+        ],
+        "workspace_scope": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "workspace-claims",
+      "description": "Adds workspace attributes and group memberships to the access token.",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "workspace groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-group-membership-mapper",
+          "consentRequired": false,
+          "config": {
+            "full.path": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "claim.name": "workspace_groups"
+          }
+        }
+      ]
+    }
+  ]
+}

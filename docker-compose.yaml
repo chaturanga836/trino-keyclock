@@ -2,7 +2,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.0
     container_name: keycloak-prod
-    command: start-dev
+    command: start-dev --import-realm
     env_file:
       - .env
     environment:
@@ -20,5 +20,9 @@ services:
       # Networking
       KC_HOSTNAME_STRICT: "false"
       KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
     ports:
       - "8081:8080"
+    volumes:
+      - ./realm-import:/opt/keycloak/data/import
