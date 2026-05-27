@@ -10,22 +10,6 @@
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": true,
   "editUsernameAllowed": false,
-  "defaultRoles": [
-    "offline_access",
-    "uma_authorization"
-  ],
-  "defaultDefaultClientScopes": [
-    "profile",
-    "email",
-    "roles",
-    "workspace-claims"
-  ],
-  "defaultOptionalClientScopes": [
-    "address",
-    "phone",
-    "microprofile-jwt",
-    "offline_access"
-  ],
   "roles": {
     "realm": [
       {
@@ -62,84 +46,49 @@
     {
       "name": "workspaces",
       "attributes": {
-        "group_type": [
-          "workspace-root"
-        ]
+        "group_type": ["workspace-root"]
       },
       "subGroups": [
         {
           "name": "ws-default",
           "attributes": {
-            "workspace_id": [
-              "ws-default"
-            ],
-            "workspace_name": [
-              "Default Workspace"
-            ],
-            "workspace_status": [
-              "active"
-            ]
+            "workspace_id": ["ws-default"],
+            "workspace_name": ["Default Workspace"],
+            "workspace_status": ["active"]
           },
-          "realmRoles": [
-            "workspace_user"
-          ],
+          "realmRoles": ["workspace_user"],
           "subGroups": [
             {
               "name": "admins",
               "attributes": {
-                "workspace_id": [
-                  "ws-default"
-                ],
-                "membership_type": [
-                  "workspace-admins"
-                ]
+                "workspace_id": ["ws-default"],
+                "membership_type": ["workspace-admins"]
               },
-              "realmRoles": [
-                "workspace_admin",
-                "workspace_editor"
-              ]
+              "realmRoles": ["workspace_admin", "workspace_editor"]
             },
             {
               "name": "members",
               "attributes": {
-                "workspace_id": [
-                  "ws-default"
-                ],
-                "membership_type": [
-                  "workspace-members"
-                ]
+                "workspace_id": ["ws-default"],
+                "membership_type": ["workspace-members"]
               },
-              "realmRoles": [
-                "workspace_user"
-              ]
+              "realmRoles": ["workspace_user"]
             },
             {
               "name": "viewers",
               "attributes": {
-                "workspace_id": [
-                  "ws-default"
-                ],
-                "membership_type": [
-                  "workspace-viewers"
-                ]
+                "workspace_id": ["ws-default"],
+                "membership_type": ["workspace-viewers"]
               },
-              "realmRoles": [
-                "workspace_viewer"
-              ]
+              "realmRoles": ["workspace_viewer"]
             },
             {
               "name": "editors",
               "attributes": {
-                "workspace_id": [
-                  "ws-default"
-                ],
-                "membership_type": [
-                  "workspace-editors"
-                ]
+                "workspace_id": ["ws-default"],
+                "membership_type": ["workspace-editors"]
               },
-              "realmRoles": [
-                "workspace_editor"
-              ]
+              "realmRoles": ["workspace_editor"]
             }
           ]
         }
@@ -148,12 +97,7 @@
     {
       "name": "invites",
       "attributes": {
-        "group_type": [
-          "invitation-root"
-        ],
-        "note": [
-          "Store invitation metadata as group attributes for pending users or service workflows."
-        ]
+        "group_type": ["invitation-root"]
       }
     }
   ],
@@ -166,23 +110,17 @@
       "protocol": "openid-connect",
       "redirectUris": [
         "http://localhost:3000/*",
-        "http://127.0.0.1:3000/*"
+        "http://127.0.0.1:3000/*",
+        "http://13.200.160.10:3000/*"
       ],
       "webOrigins": [
         "http://localhost:3000",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000",
+        "http://13.200.160.10:3000"
       ],
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": false,
-      "fullScopeAllowed": false,
-      "defaultClientScopes": [
-        "profile",
-        "email",
-        "roles"
-      ],
-      "optionalClientScopes": [
-        "offline_access"
-      ]
+      "fullScopeAllowed": true
     },
     {
       "clientId": "workspace-api",
@@ -193,13 +131,8 @@
       "serviceAccountsEnabled": true,
       "standardFlowEnabled": false,
       "directAccessGrantsEnabled": false,
-      "fullScopeAllowed": false,
-      "secret": "workspace-api-secret-change-me",
-      "defaultClientScopes": [
-        "profile",
-        "email",
-        "roles"
-      ]
+      "fullScopeAllowed": true,
+      "secret": "workspace-api-secret-change-me"
     }
   ],
   "users": [
@@ -217,40 +150,22 @@
           "temporary": false
         }
       ],
-      "requiredActions": [
-        "UPDATE_PASSWORD"
-      ],
       "realmRoles": [
         "super_admin",
         "cross_workspace_delegate",
         "impersonation_operator"
       ],
-      "groups": [
-        "/workspaces/ws-default/admins"
-      ],
-      "clientRoles": {
-        "realm-management": [
-          "impersonation",
-          "manage-users",
-          "view-users",
-          "query-users",
-          "query-groups"
-        ]
-      },
+      "groups": ["/workspaces/ws-default/admins"],
       "attributes": {
-        "bootstrap_user": [
-          "true"
-        ],
-        "workspace_scope": [
-          "*"
-        ]
+        "bootstrap_user": ["true"],
+        "workspace_scope": ["*"]
       }
     }
   ],
   "clientScopes": [
     {
       "name": "workspace-claims",
-      "description": "Adds workspace attributes and group memberships to the access token.",
+      "description": "Adds workspace group memberships to the access token.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",

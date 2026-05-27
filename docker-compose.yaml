@@ -1,7 +1,8 @@
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:26.0.0
-    container_name: keycloak-prod
+    image: quay.io/keycloak/keycloak:26.0.7
+    container_name: etl-keycloak-container
+    restart: unless-stopped
     command: start-dev --import-realm
     env_file:
       - .env
@@ -22,6 +23,7 @@ services:
       KC_HTTP_ENABLED: "true"
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
+    # Host 8081 (Jenkins uses host 8080). Container still listens on 8080 internally.
     ports:
       - "8081:8080"
     volumes:

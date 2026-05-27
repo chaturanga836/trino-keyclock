@@ -30,7 +30,19 @@ This repository now boots Keycloak with a pre-imported realm designed for a work
 docker compose up -d
 ```
 
-Keycloak runs at `http://localhost:8081`.
+Keycloak runs at `http://localhost:8081` (container name: `etl-keycloak-container`, host port **8081** — Jenkins uses **8080**).
+
+**Realm import file name:** must be `workspace-realm-realm.json` (realm id `workspace-realm` + `-realm.json` suffix). A file named only `workspace-realm.json` causes `Session not bound to a realm` on Keycloak 26.
+
+If import was attempted with the wrong name, reset once:
+
+```bash
+docker compose down
+# drop keycloak schema or DB if a broken partial import exists, then:
+docker compose up -d
+```
+
+After first successful start, assign `realm-management` roles to `superadmin` in the Admin Console if you need impersonation (not included in import to avoid startup bugs on 26.0.x).
 
 ## Requirement mapping
 
