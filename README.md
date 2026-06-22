@@ -32,6 +32,32 @@ docker compose up -d
 
 Keycloak runs at `http://localhost:8081` (container name: `etl-keycloak-container`, host port **8081** — Jenkins uses **8080**).
 
+### Production domain (`dtorch.online`)
+
+`docker-compose.yaml` sets:
+
+| Variable | Purpose |
+|----------|---------|
+| `KC_HOSTNAME` | Public issuer/OAuth URLs (`https://dtorch.online/realms/...`) |
+| `KC_HOSTNAME_ADMIN` | Admin console on `http://13.200.160.10:8081/admin` |
+| `KC_PROXY_HEADERS` | Trust `X-Forwarded-*` from nginx on the frontend host |
+
+Override in `.env` if needed: `KC_HOSTNAME=dtorch.online`
+
+After changing hostname env vars, recreate the container:
+
+```bash
+docker compose up -d --force-recreate keycloak
+```
+
+Verify issuer:
+
+```bash
+curl -s https://dtorch.online/realms/workspace-realm/.well-known/openid-configuration | grep issuer
+```
+
+Also update client **`workspace-web`** redirect URIs and web origins to `https://dtorch.online/*`.
+
 **Realm import file name:** must be `workspace-realm-realm.json` (realm id `workspace-realm` + `-realm.json` suffix). A file named only `workspace-realm.json` causes `Session not bound to a realm` on Keycloak 26.
 
 If import was attempted with the wrong name, reset once:
