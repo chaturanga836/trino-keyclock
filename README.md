@@ -38,11 +38,11 @@ Keycloak runs at `http://localhost:8081` (container name: `etl-keycloak-containe
 
 | Variable | Purpose |
 |----------|---------|
-| `KC_HOSTNAME` | Public issuer/OAuth URLs (`https://dtorch.online/realms/...`) |
-| `KC_HOSTNAME_ADMIN` | Admin console on `http://13.200.160.10:8081/admin` |
+| `KC_HOSTNAME` | Full public URL (`https://dtorch.online`) for issuer/OAuth endpoints |
+| `KC_HOSTNAME_ADMIN` | Full admin URL (`http://13.200.160.10:8081`) for the Admin Console |
 | `KC_PROXY_HEADERS` | Trust `X-Forwarded-*` from nginx on the frontend host |
 
-Override in `.env` if needed: `KC_HOSTNAME=dtorch.online`
+Override in `.env` if needed, e.g. `KC_HOSTNAME=https://dtorch.online`
 
 After changing hostname env vars, recreate the container:
 

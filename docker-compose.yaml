@@ -14,12 +14,11 @@ services:
       KC_DB_PASSWORD: ${DB_PASSWORD}
       KC_HOSTNAME_STRICT_HTTPS: "false"
 
-      # Public browser URL (nginx HTTPS proxy on :443). Issuer/OAuth endpoints use this host.
-      KC_HOSTNAME: ${KC_HOSTNAME:-dtorch.online}
-      # Admin console stays on host:8081 (not proxied through dtorch.online).
-      KC_HOSTNAME_ADMIN: ${KC_HOSTNAME_ADMIN:-13.200.160.10}
-      KC_HOSTNAME_ADMIN_PORT: ${KC_HOSTNAME_ADMIN_PORT:-8081}
-      KC_HOSTNAME_ADMIN_HTTP_ENABLED: "true"
+      # Keycloak 26 hostname v2: full URLs required (hostname + port cannot be split).
+      # Public OAuth/issuer URLs (nginx HTTPS on :443).
+      KC_HOSTNAME: ${KC_HOSTNAME:-https://dtorch.online}
+      # Admin console on host :8081 (not proxied through the domain).
+      KC_HOSTNAME_ADMIN: ${KC_HOSTNAME_ADMIN:-http://13.200.160.10:8081}
       KC_PROXY_HEADERS: xforwarded
       
       # Initial Admin Credentials
